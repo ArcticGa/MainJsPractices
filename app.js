@@ -1,39 +1,33 @@
-const upBtn = document.querySelector('.up-button')
-const downBtn = document.querySelector('.down-button')
-const sidebar = document.querySelector('.sidebar')
-const mainSlide = document.querySelector('.main-slide')
-const container = document.querySelector('.container')
-const slidesCount = mainSlide.querySelectorAll('div').length
+const board = document.querySelector('#board')
+const colors = ['#00ff44', '#03f0fc', '#002fff', '#f200ff', '#fff700']
+const SQUARES_NUMBER = 500
 
+for (let i = 0; i < SQUARES_NUMBER; i++) {
 
-sidebar.style.top = `-${(slidesCount - 1) * 100}vh`
+  const square = document.createElement('div')
 
-let activeSlideIndex = 0
+  square.classList.add('square')
 
-upBtn.addEventListener('click', () => {
-  changeSlide('up')
-})
+  square.addEventListener('mouseover', () => {
+    setColor(square)
+  })
 
-downBtn.addEventListener('click', () => {
-  changeSlide('down')
-})
+  square.addEventListener('mouseleave', () => {
+    removeColor(square)
+  })
 
-function changeSlide(direction) {
-  if (direction === 'up') {
-    activeSlideIndex++
-    if (activeSlideIndex === slidesCount) {
-        activeSlideIndex = 0
-    }
-  } else if (direction === 'down') {
-    activeSlideIndex--
-    if(activeSlideIndex < 0) {
-      activeSlideIndex = slidesCount - 1
-    }
-  }
+  board.append(square)
+}
 
-  const height = container.clientHeight
-
-  mainSlide.style.transform = `translateY(-${activeSlideIndex * height }px)`
-
-  sidebar.style.transform = `translateY(${activeSlideIndex * height }px)`
+function setColor(element) {
+  const color = getRandomColor()
+  element.style.backgroundColor = color
+  element.style.boxShadow = `0 0 2px ${color}, 0 0 10px ${color}`
+}
+function removeColor(element) {
+  element.style.backgroundColor = '#1d1d1d'
+  element.style.boxShadow = `0 0 2px #000`
+}
+function getRandomColor() {
+  return colors[Math.floor(Math.random() * colors.length)]
 }
